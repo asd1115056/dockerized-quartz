@@ -52,3 +52,35 @@ Before rebuilding, the container will execute a `git pull` inside `/vault` to fe
 
 **Note**:
 When using Git-based updates volume **needs** read-write permissions to execute `git pull`. Mount volume with `/path/on/host/git_vault:/vault` without the `:ro` flag.
+
+#### Authenticating with Private Repositories
+
+If your vault is stored in a **private GitHub repository**, you'll need to provide a Personal Access Token for authentication.
+
+##### Setup Steps
+
+1. **Generate a GitHub Personal Access Token:**
+   - Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+   - Click "Generate new token (classic)"
+   - Select scope: `repo` (Full control of private repositories)
+   - Copy the generated token (starts with `ghp_`)
+
+2. **Configure environment variables in your .env file:**
+   ```sh
+   VAULT_DO_GIT_PULL_ON_UPDATE=true
+   VAULT_GIT_USERNAME=your-github-username
+   VAULT_GIT_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+   ```
+
+3. **Clone your vault repository using HTTPS:**
+   ```sh
+   git clone https://github.com/username/private-vault.git /path/on/host/vault
+   ```
+
+4. **Mount the vault in docker-compose.yml:**
+   ```yaml
+   volumes:
+     - /path/on/host/vault:/vault
+   ```
+
+**Security Note:** Never commit your `.env` file to version control. Add it to `.gitignore`.
