@@ -24,7 +24,12 @@ fi
 
 if [ "$VAULT_DO_GIT_PULL_ON_UPDATE" = true ]; then
   echo "Executing git pull in $VAULT_DIR"
-  cd "$VAULT_DIR" && git pull || echo "Warning: git pull in '$VAULT_DIR' failed. Building the vault as it stands."
+  GIT_AUTH=()
+  if [ -n "$VAULT_GIT_USERNAME" ] && [ -n "$VAULT_GIT_TOKEN" ]; then
+    # The helper reads the token from the environment, so it is never written to .git/config.
+    GIT_AUTH=(-c credential.helper= -c 'credential.helper=!f() { echo "username=$VAULT_GIT_USERNAME"; echo "password=$VAULT_GIT_TOKEN"; }; f')
+  fi
+  cd "$VAULT_DIR" && git "${GIT_AUTH[@]}" pull || echo "Warning: git pull in '$VAULT_DIR' failed. Building the vault as it stands."
 fi
 
 cd $QUARTZ_DIR

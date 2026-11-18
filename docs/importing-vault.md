@@ -86,3 +86,18 @@ latest changes. That is `/vault` unless you set `VAULT_DIR`, in which case it is
 
 **Note**:
 When using Git-based updates volume **needs** read-write permissions to execute `git pull`. Mount volume with `/path/on/host/git_vault:/vault` without the `:ro` flag.
+
+#### Private repositories
+
+For a private vault repository, clone it over HTTPS and give the container a Personal Access Token
+with read access to the repository (for GitHub: a fine-grained token with `Contents: Read`, or a
+classic token with the `repo` scope):
+
+```sh
+VAULT_DO_GIT_PULL_ON_UPDATE=true
+VAULT_GIT_USERNAME=your-github-username
+VAULT_GIT_TOKEN=<your-token>
+```
+
+The token is read from the environment for each `git pull` and is not written to the repository's
+git config. Keep your `.env` file out of version control. SSH remotes are not covered by this.

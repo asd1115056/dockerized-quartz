@@ -20,7 +20,7 @@ container builds the site and serves it with NGINX, rebuilding when the notes ch
 - Images are published for `linux/amd64` and `linux/arm64`.
 - The image ships Node 24. Quartz needs Node 22 or newer. Build with
   `--build-arg NODE_MAJOR=22` if you need the older line.
-- Tags on Docker Hub are `latest`, the full version such as `1.1.0`, and the
+- Tags on GitHub Container Registry are `latest`, the full version such as `1.1.0`, and the
   `major.minor` alias such as `1.1`. Pin one of the version tags if you would
   rather not move when a new release lands.
 
@@ -48,7 +48,7 @@ To quickly get started with Quartz in Docker create `docker-compose.yml` file:
     ```yaml
     services:
       quartz:
-        image: shommey/dockerized-quartz:latest
+        image: ghcr.io/asd1115056/dockerized-quartz:latest
         container_name: quartz-notes
         environment:
           # Optional: your own Quartz repo, leave it out for the default one

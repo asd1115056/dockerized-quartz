@@ -1,6 +1,6 @@
 services:
   quartz:
-    image: shommey/dockerized-quartz:latest
+    image: ghcr.io/asd1115056/dockerized-quartz:latest
     container_name: quartz-notes
     environment:
       # Use your custom Quartz repo or leave it out for the default Quartz repo
